@@ -143,7 +143,7 @@ func findIssue(client *http.Client, baseRepoFn func() (ghrepo.Interface, error),
 
 func printRawIssuePreview(out io.Writer, issue *api.Issue, cs *iostreams.ColorScheme) error {
 	assignees := issueAssigneeList(*issue)
-	labels := shared.IssueLabelList(*issue, cs)
+	labels := issueShared.IssueLabelList(*issue, cs)
 	projects := issueProjectList(*issue)
 
 	// Print empty strings for empty values so the number of metadata lines is consistent when
