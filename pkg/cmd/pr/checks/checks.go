@@ -135,7 +135,7 @@ func checksRun(opts *ChecksOptions) error {
 		case "SUCCESS":
 			passing++
 		case "SKIPPED", "NEUTRAL":
-			mark = "/"
+			mark = "-"
 			markColor = cs.Gray
 			skipping++
 			bucket = "skipping"
@@ -224,8 +224,7 @@ func checksRun(opts *ChecksOptions) error {
 			summary = "All checks were successful"
 		}
 
-		tallies := fmt.Sprintf(
-			"%d failing, %d successful, %d skipped, and %d pending checks",
+		tallies := fmt.Sprintf("%d failing, %d successful, %d skipped, and %d pending checks",
 			failing, passing, skipping, pending)
 
 		summary = fmt.Sprintf("%s\n%s", cs.Bold(summary), tallies)
