@@ -14,6 +14,7 @@ import (
 	surveyCore "github.com/AlecAivazis/survey/v2/core"
 	"github.com/AlecAivazis/survey/v2/terminal"
 	"github.com/cli/cli/v2/api"
+	"github.com/cli/cli/v2/git"
 	"github.com/cli/cli/v2/internal/build"
 	"github.com/cli/cli/v2/internal/config"
 	"github.com/cli/cli/v2/internal/ghinstance"
@@ -24,6 +25,8 @@ import (
 	"github.com/cli/cli/v2/pkg/cmd/factory"
 	"github.com/cli/cli/v2/pkg/cmd/root"
 	"github.com/cli/cli/v2/pkg/cmdutil"
+	"github.com/cli/cli/v2/pkg/iostreams"
+	"github.com/cli/cli/v2/pkg/prompt"
 	"github.com/cli/cli/v2/utils"
 	"github.com/cli/safeexec"
 	"github.com/mattn/go-colorable"
@@ -48,6 +51,34 @@ func main() {
 }
 
 func mainRun() exitCode {
+	if true {
+		io := iostreams.System()
+		cs := io.ColorScheme()
+		stderr := io.ErrOut
+
+		io.StartProgressIndicator()
+		time.Sleep(1 * time.Second)
+		io.StopProgressIndicator()
+		fmt.Fprintf(stderr, "%s %s %s\n",
+			cs.Yellow("!"),
+			cs.Bold(ghrepo.FullName(ghrepo.New("bchadwic", "cli"))),
+			"already exists")
+		var confirm bool
+		err := prompt.Confirm("Would you like to add a remote for the fork?", &confirm)
+		if err != nil {
+			return exitError
+		}
+		cloneDir, err := git.RunClone("https://github.com/bchadwic/cli", []string{"cli-test!"})
+		if err != nil {
+			return exitError
+		}
+		err = git.AddUpstreamRemote("https://github.com/cli/cli", cloneDir, []string{})
+		if err != nil {
+			return exitError
+		}
+		fmt.Fprintf(stderr, "%s cloning repo\n", cs.SuccessIcon())
+		return exitOK
+	}
 	buildDate := build.Date
 	buildVersion := build.Version
 
