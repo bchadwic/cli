@@ -64,7 +64,7 @@ func mainRun() exitCode {
 			cs.Bold(ghrepo.FullName(ghrepo.New("bchadwic", "cli"))),
 			"already exists")
 		var confirm bool
-		err := prompt.Confirm("Would you like to add a remote for the fork?", &confirm)
+		err := prompt.Confirm("Would you like to clone the fork?", &confirm)
 		if err != nil {
 			return exitError
 		}
