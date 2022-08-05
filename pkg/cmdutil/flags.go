@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/cli/cli/v2/git"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
@@ -42,6 +43,15 @@ func StringSliceEnumFlag(cmd *cobra.Command, p *[]string, name, shorthand string
 		return options, cobra.ShellCompDirectiveNoFileComp
 	})
 	return f
+}
+
+func AddBranchAutoCompleter(cmd *cobra.Command, flags ...string) {
+	var branchAutoCompleter = func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return git.GetRemoteBranches(), cobra.ShellCompDirectiveDefault
+	}
+	for _, flag := range flags {
+		_ = cmd.RegisterFlagCompletionFunc(flag, branchAutoCompleter)
+	}
 }
 
 func formatValuesForUsageDocs(values []string) string {
